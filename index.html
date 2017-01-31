@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>冷饮批发管理系统-地图</title>
+		<!--<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=a7fcc3c4a4338afe44f4db7695edf903"></script>-->
+		 <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+	    <script type="text/javascript" src="js/jquery.min.js" ></script>
+	    <script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
+	    <script src="http://webapi.amap.com/maps?v=1.3&key=a7fcc3c4a4338afe44f4db7695edf903&plugin=AMap.MouseTool"></script>
+	    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+
+		<style type="text/css">
+		*{margin: 0; padding: 0;}
+		body{background: url(img/coldbg01.jpg);no repeat top center;font-size: 12px;font-family: "微软雅黑";color: #666;}
+		/*search start */
+		.search{width: 1000px;height: 600px;margin: 80px auto;position: relative;}
+		.search h1{text-align: center;font-size: 24px;font-weight: 500;color:#FFF;background: #3397e4;line-height: 50px;}
+		.search .s_map{width:1000px;height: 550px;}
+		/*ene search*/
+		
+		/*menu start*/
+		.menu{width: 100px;box-shadow: 1px 1px 5px 0px #000;margin: 0 auto;background: #fff;}
+		.menu ul li{list-style: none;line-height: 34px;padding-left: 10px; }
+		.menu ul li:hover{background: #ebebeb;}
+		/*end menu*/
+		
+		/*box start*/
+		.box{box-shadow: 0px 1px 30px 0px #000;width:612px;position: absolute;top:140px;left:360px}
+		.box .b_search{width:500px;height:36px;line-height: 36px;border:1px solid #e0e0e0;padding-left: 10px;font-size: 16px;font-family: "微软雅黑";color: #666;outline: none;}
+		.box .b_btn{width:100px;height:38px;border:none;background: #690;font-size: 14px;font-family: "微软雅黑";color: #fff;outline: none;cursor: pointer;}
+		.box .b_btn:hover{background:#557d00}
+		/*end box*/
+		
+		</style>
+		
+	</head>
+	<body>
+		<div class="search">
+			<h1>冷饮批发找阿庆</h1>
+			<div class="s_map" id="wqpf_map"></div>
+		</div>
+		<div class="box">
+			<input type="text" id="wq_city" class="b_search"/><input type="button" value="搜索" onclick="btnSearch()" class="b_btn" />
+		</div>
+		<script type="text/javascript">
+		    var map = new AMap.Map("wqpf_map", {
+		        resizeEnable: true
+		    });
+		    var menu=new ContextMenu(map);
+		    function ContextMenu(map) {
+		        var me = this;
+		        this.mouseTool = new AMap.MouseTool(map); //地图中添加鼠标工具MouseTool插件
+		        this.contextMenuPositon = null;
+		        var content = [];
+		        content.push("<div class='menu'>");
+		        content.push("    <ul>");
+		        content.push("        <li onclick='menu.zoomMenu(0)'>缩小</li>");
+		        content.push("        <li onclick='menu.zoomMenu(1)'>放大</li>");
+		        content.push("        <li onclick='menu.distanceMeasureMenu()'>距离量测量</li>");
+		        content.push("        <li onclick='menu.addMarkerMenu()'>添加标记</li>");
+		        content.push("    </ul>");
+		        content.push("</div>");
+		        this.contextMenu = new AMap.ContextMenu({isCustom: true, content: content.join('')});//通过content自定义右键菜单内容
+		        //地图绑定鼠标右击事件——弹出右键菜单
+		        map.on('rightclick', function(e) {
+		            me.contextMenu.open(map, e.lnglat);
+		            me.contextMenuPositon = e.lnglat; //右键菜单位置
+		        });
+		    }
+		
+		    ContextMenu.prototype.zoomMenu = function zoomMenu(tag) {//右键菜单缩放地图
+		        if (tag === 0) {
+		            map.zoomOut();
+		        }
+		        if (tag === 1) {
+		            map.zoomIn();
+		        }
+		        this.contextMenu.close();
+		    }
+		    ContextMenu.prototype.distanceMeasureMenu=function () {  //右键菜单距离量测
+		        this.mouseTool.rule();
+		        this.contextMenu.close();
+		    }
+		    ContextMenu.prototype.addMarkerMenu=function () {  //右键菜单添加Marker标记
+		        this.mouseTool.close();
+		        var marker = new AMap.Marker({
+		            map: map,
+		            position: this.contextMenuPositon //基点位置
+		        });
+		        this.contextMenu.close();
+		    }
+		    
+		    function btnSearch(){
+		    	var city=$("#wq_city").val();
+		    	if(!city){
+		    		alert("请输入查询城市!");
+		    		return;
+		    	}
+		    	map.setCity(city);
+		    }
+		    
+		    
+		</script>
+	</body>
+</html>

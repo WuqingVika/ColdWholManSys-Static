@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>冷饮批发/选择冷饮店铺</title>
+		<link rel="stylesheet" type="text/css" href="../js/easyui/themes/default/easyui.css">   
+		<link rel="stylesheet" type="text/css" href="../js/easyui/themes/icon.css">  
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+		<script type="text/javascript" src="../js/easyui/jquery.min.js"></script>   
+		<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script> 
+		<script type="text/javascript" src="../js/easyui/plugins/datagrid-detailview.js"></script>
+		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+	</head>
+		<body >  
+		<div id="cc" class="easyui-layout" style="width:1000px;height:750px;overflow:hidden;margin: 0 auto;"  border="false" >   
+			<div data-options="region:'north'" style="height:50px;" ></div>   
+			<div data-options="region:'center'" style="padding:0px;background:#eee;" border="false" >
+				<!--中间部分-->
+		        <table fit="true" id="dg" class="easyui-datagrid" title="选择冷饮店铺" iconCls="icon-shield"
+		               toolbar="#tb" idField="id" rownumbers="true" singleSelect="true"  pagination="true"
+		               style="width:800px;height:400px"
+					   fitColumns="true" remoteSort="false"
+			           >
+		            <thead>
+		            <tr>
+		                <th field="number" align="center" width="80" hidden="true">编号</th>
+		                <th field="saler" align="center" width="80" >卖家</th>
+		                <th field="name" align="center" width="100" >店铺名称</th>
+		                <!--<th field="maijia" align="center" width="100" >卖家</th>-->
+		                <th field="desc" align="center" width="200">店铺介绍</th>
+		                <th field="position" align="center" width="200">店铺地址</th>
+		                <th field="rule" align="center" width="200">优惠规则</th>
+		                <th field="postWay" align="center" width="200">送货方式</th>
+		                <th field="tel" align="center" width="200">联系方式</th>
+		            </tr>
+		            </thead>
+		        </table>
+		        <div id="tb" style="padding:5px">
+		            <span>店铺名:&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		            <input id="id" class="easyui-textbox" prompt="请输入店铺名称"
+		                   style="width:170px;height:26px;">&nbsp;&nbsp;&nbsp;&nbsp;
+		            
+		            <a href="#" iconCls="icon-search" class="easyui-linkbutton" onclick="doSearch()">查询</a>
+		            &nbsp;&nbsp;
+		        </div>
+			    <script type="text/javascript">
+			    var cardview = $.extend({}, $.fn.datagrid.defaults.view, {
+					renderRow: function(target, fields, frozen, rowIndex, rowData){
+						var cc = [];
+						cc.push('<td colspan=' + fields.length + ' style="padding:10px 5px;border:0;">');
+						if (!frozen){
+							//var aa = rowData.itemid.split('-');
+							var img = 'shopone'  + '.png';
+							cc.push("<div style=\"float:left;margin-left:15px;margin-top:80px;margin-right:50px;font-family:'微软雅黑'\"><span style=\"font-size:30px;font-weight:800;\">"+(rowIndex+1)+"</span></div>");
+							cc.push('<img src="../img/' + img + '" style="width:200px;float:left">');
+							cc.push('<div style="float:left;margin-left:20px; width:500px;" >');
+							//取出商家编号
+							//var firstline== $(target).datagrid('getColumnOption', fields[0]);
+							for(var i=0; i<fields.length; i++){
+								var copts = $(target).datagrid('getColumnOption', fields[i]);
+								
+								if(i==0){
+									//cc.push("<br/>");
+									//cc.push('<p><span class="c-label">' + copts.title + ':</span> ' + rowData[fields[i]] + '</p>');
+								}else{
+									cc.push('<p><span class="c-label">' + copts.title + ':</span> ' + rowData[fields[i]] + '</p>');
+								}
+								}
+							//cc.push('<a href="#" iconCls="icon-search" class="easyui-linkbutton" onclick="doSearch()">进店批发</a>');
+							cc.push('</div>');
+							cc.push("<div onclick=\"javascript:alert('"+rowData[fields[0]]+"')\" style=\"float:left;margin-left:5px;margin-top:80px;\"><span class='l-btn-left l-btn-icon-left' style='margin-top: 2px;'><span class='l-btn-text'>进店批发</span><span class='l-btn-icon icon-add'>&nbsp;</span></span></div>");
+						}
+						cc.push('</td>');
+						return cc.join('');
+					}
+				});
+	
+			        $("#dg").datagrid({
+			            "url":"shops.json",
+			            "method":"get",
+			            "view":cardview
+			             
+			        });
+			    </script>
+				<!--中间部分 结束-->		 		 
+			</div>   
+			<div data-options="region:'south',split:false" style="height:30px;text-align: center;" >
+				版权所有@冷饮批发管理系统  Copyright 2016-2017
+			</div> 
+			</div>
+		</body>
+</html>

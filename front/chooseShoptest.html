@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>冷饮批发/选择冷饮店铺</title>
+		<link rel="stylesheet" type="text/css" href="../js/easyui/themes/default/easyui.css">   
+		<link rel="stylesheet" type="text/css" href="../js/easyui/themes/icon.css">  
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+		<script type="text/javascript" src="../js/easyui/jquery.min.js"></script>   
+		<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script> 
+		<script type="text/javascript" src="../js/easyui/plugins/datagrid-detailview.js"></script>
+		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+	</head>
+		<body >  
+		<div id="cc" class="easyui-layout" style="width:1000px;height:750px;overflow:hidden;margin: 0 auto;"  border="false" >   
+			<div data-options="region:'north'" style="height:50px;" ></div>   
+			<div data-options="region:'center'" style="padding:0px;background:#eee;" border="false" >
+				<!--中间部分-->
+		        <table fit="true" id="dg" class="easyui-datagrid" title="选择冷饮店铺" iconCls="icon-shield"
+		               toolbar="#tb" idField="id" rownumbers="true" singleSelect="true"  pagination="true">
+		            <thead>
+		            <tr>
+		                <th field="number" align="center" width="80">编号</th>
+		                <th field="name" align="center" width="100" >店铺名称</th>
+		                <th field="desc" align="center" width="200">店铺介绍</th>
+		                <th field="position" align="center" width="200">店铺地址</th>
+		                <th field="rule" align="center" width="200">优惠规则</th>
+		                <th field="postWay" align="center" width="200">送货方式</th>
+		                
+		            </tr>
+		            </thead>
+		        </table>
+		        <div id="tb" style="padding:5px">
+		            <span>店铺名:&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		            <input id="id" class="easyui-textbox" prompt="请输入店铺名称"
+		                   style="width:170px;height:26px;">&nbsp;&nbsp;&nbsp;&nbsp;
+		            
+		            <a href="#" iconCls="icon-search" class="easyui-linkbutton" onclick="doSearch()">查询</a>
+		            &nbsp;&nbsp;
+		        </div>
+			    <script type="text/javascript">
+			        $("#dg").datagrid({
+			            "url":"shops.json",
+			            "method":"get",
+			        });
+			    </script>
+				<!--中间部分 结束-->		 		 
+			</div>   
+			<div data-options="region:'south',split:false" style="height:30px;text-align: center;" >
+				版权所有@冷饮批发管理系统  Copyright 2016-2017
+			</div> 
+			</div>
+		</body>
+</html>
