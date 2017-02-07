@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>品牌-列表</title>
+    <link rel="stylesheet" type="text/css" href="../../js/easyui/themes/default/easyui.css">   
+	<link rel="stylesheet" type="text/css" href="../../js/easyui/themes/icon.css">  
+	<script type="text/javascript" src="../../js/easyui/jquery.min.js"></script>   
+	<script type="text/javascript" src="../../js/easyui/jquery.easyui.min.js"></script> 
+	<script type="text/javascript" src="../../js/easyui/plugins/datagrid-detailview.js"></script>
+	<script type="text/javascript" src="../../js/easyui/locale/easyui-lang-zh_CN.js"></script>
+	<style type="text/css"> 
+        #fm 
+        { 
+            margin: 0; 
+            padding: 10px 30px; 
+        } 
+        .ftitle 
+        { 
+            font-size: 14px; 
+            font-weight: bold; 
+            padding: 5px 0; 
+            margin-bottom: 10px; 
+            border-bottom: 1px solid #ccc; 
+        } 
+        .fitem 
+        { 
+            margin-bottom: 5px; 
+        } 
+        .fitem label 
+        { 
+            display: inline-block; 
+            width: 80px; 
+        } 
+    </style> 
+</head>
+<body style="padding:5px;">
+    <div class="easyui-layout" fit="true" border="false">
+        <div region="center" border="false">
+            <table fit="true" id="dg" class="easyui-datagrid" title="品牌-列表" iconCls="icon-comment_edit"
+                   toolbar="#tb" idField="id"
+                   rownumbers="true" fitColumns="true"  pagination="true">
+                <!--<thead>
+                <tr>
+                    <th field="ck" checkbox="true"></th>
+                    <th field="id" align="center" width="50">品牌Id</th>
+                    <th field="name" align="center" width="100">品牌名称</th>
+                    <th field="imgUrl" align="center" width="100" data-options="formatter: imgFormatter">品牌图片</th>
+                    <th field="description" align="center" width="150">品牌描述</th>
+                    <th field="sort" align="center" width="50" >排序</th>
+                    <th field="operation" align="center" width="100" data-options="formatter: opeFormatter">操作选项</th>
+                </tr>
+                </thead>-->
+            </table>
+            <div id="tb" style="padding:5px">
+                <span>关键字:&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <input id="id" class="easyui-textbox" prompt="请输入品牌ID/品牌名称..."
+                       style="width:170px;height:26px;">&nbsp;&nbsp;
+              
+                <a href="#" iconCls="icon-search" class="easyui-linkbutton" onclick="doSearch()">条件查询</a>
+                &nbsp;&nbsp;
+                <a href="#" iconCls="icon-arrow_refresh" class="easyui-linkbutton">刷新所有</a>
+                &nbsp;&nbsp;<br />
+                  <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" onclick="newuser()"
+            		plain="true">添加</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit"
+                onclick="edituser()" plain="true">修改</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+                  onclick="delBrand()"  iconcls="icon-remove" plain="true">删除</a>
+            </div>
+            
+            //品牌编辑模态框
+            <div id="editDialog" class="easyui-dialog" style="width: 500px; height: 280px; padding: 10px 20px;"
+      				 closed="true" buttons="#dlg-buttons" data-options="modal: true"> 
+            	<form id="jvForm" action="edit.do" method="post">
+            		<input  name="id" hidden="true"/>
+            		  	<table cellpadding="5">
+            		  		<tr>
+				    			<td>品牌名称:</td>
+				    			<td><input class="easyui-textbox" type="text" name="name" data-options="required:true"></input></td>
+				    		</tr>
+				    		<tr>
+				    			<td>排序:</td><!--data-options="required:true,validType:'email'"-->
+				    			<td><input class="easyui-textbox" type="text" name="sort" data-options="required:true"></input></td>
+				    		</tr>
+				    		<tr>
+				    			<td>品牌图标:</td>
+				    			<td ><img id="img" name="imgUrl" style="width:30px; height:30px" ><input type="file" /></td>
+				    		</tr>
+				    		<tr>
+				    			<td>品牌描述:</td>
+				    			<td><input class="easyui-textbox" name="description" data-options="multiline:true" style="height:60px"></input></td>
+				    		</tr>
+	    				</table>
+				</form>
+			</div>
+            //编辑end
+            //弹框编辑
+            <div id="dlg" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px;"
+      				 closed="true" buttons="#dlg-buttons" data-options="modal: true"> 
+			       <div class="ftitle"> 
+			          	品牌编辑
+			       </div> 
+			       <form id="fm" method="post"> 
+					       <div class="fitem"> 
+					           <input name="id" hidden="true"  /> 
+					       </div> 
+					       <div class="fitem"> 
+					           <label> 
+					           品牌名称</label> 
+					           <input name="name" class="easyui-validatebox" required="true" /> 
+					       </div> 
+					       <div class="fitem"> 
+					           <label> 
+					            品牌描述</label> 
+					           <input name="description" class="easyui-validatebox" required="true" /> 
+					       </div> 
+					       <div class="fitem"> 
+					           <label> 
+					              品牌图片</label> 
+					           <input name="imgUrl" data-options="formatter: imgFormatter"  /> 
+					       </div> 
+					       <input type="hidden" name="action" id="hidtype" /> 
+					       <input type="hidden" name="ID" id="Nameid" /> 
+			       </form> 
+				<div id="dlg-buttons"> 
+			        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveuser()" iconcls="icon-save">保存</a> 
+			        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')"
+			            iconcls="icon-cancel">取消</a> 
+		    	</div> 
+	</div> 
+
+				<script type="text/javascript">
+			        $("#dg").datagrid({
+			            "url":"brand.json",
+			            "method":"get",
+			            columns:[[
+			            		{field:'ck',width:50,align:'center',checkbox:'true'},
+			                    {field:'id',width:60,align:'center',sortable:true,title:'品牌ID'},
+			                    {field:'name',width:100,align:'center',sortable:true,title:'品牌名称'},
+			                    {field:'description',width:150,align:'center',sortable:true,title:'品牌描述'},
+			                    {field:'imgUrl',width:100,align:'center',title:'品牌图标',formatter:function(value,row,index){
+								    	if('' != value && null != value)
+								      	value = '<img style="width:30px; height:30px" src="' + value + '">';
+								      	return  value;
+							    	}
+			                  },
+			                    {field:'sort',width:100,align:'center',sortable:true,title:'排序'}
+			                ]]
+			        });
+			        //品牌图片处理
+			         function imgFormatter(value,row,index){
+				    	if('' != value && null != value)
+				      	value = '<img style="width:30px; height:30px" src="' + value + '">';
+				      	return  value;
+			    	}
+			         //操作按钮处理
+			          function opeFormatter(value,row,index){
+				    		var e='<a href="#" onclick="alert('+value+')">修改</a>';
+				    		var d='<a href="#" onclick="alert('+value+')">删除</a>';
+				    		return e+d;
+				    	
+			    	}
+			          
+			          //增删改
+				        var url;
+				        var type;
+				        function newuser() {
+				            $("#dlg").dialog("open").dialog('setTitle', '添加品牌'); ;
+				            $("#fm").form("clear");
+				            //url = "UserManage.aspx";
+				            document.getElementById("hidtype").value="submit";
+				        }
+				        function edituser() {
+				            var row = $("#dg").datagrid("getSelected");
+				            if (row) {
+				                $("#editDialog").dialog("open").dialog('setTitle', '修改品牌');
+				                $("#jvForm").form("load", row);
+				                document.getElementById("img").src=row.imgUrl;
+				                //url = "UserManage.aspx?id=" + row.id;
+				            }
+				        }
+				        function saveuser() {
+				        	alert("保存成功！");
+//				            $("#fm").form("submit", {
+//				                url: url,
+//				                onsubmit: function () {
+//				                    return $(this).form("validate");
+//				                },
+//				                success: function (result) {
+//				                    if (result == "1") {
+//				                        $.messager.alert("提示信息", "操作成功");
+//				                        $("#dlg").dialog("close");
+//				                        $("#dg").datagrid("load");
+//				                    }
+//				                    else {
+//				                        $.messager.alert("提示信息", "操作失败");
+//				                    }
+//				                }
+//				            });
+				        }
+				        function delBrand() {
+				            var row = $('#dg').datagrid('getSelected');
+				            if (row) {
+				                $.messager.confirm('Confirm', '您确定要删除'+row.name+'？', function (r) {
+				                    if (r) {
+				                    	alert('del success!');
+//				                        $.post('destroy_user.php', { id: row.id }, function (result) {
+//				                            if (result.success) {
+//				                                $('#dg').datagrid('reload');    // reload the user data  
+//				                            } else {
+//				                                $.messager.show({   // show error message  
+//				                                    title: 'Error',
+//				                                    msg: result.errorMsg
+//				                                });
+//				                            }
+//				                        }, 'json');
+				                    }
+				                });
+				            }
+				        }  
+			          //end 增删改
+			    </script>
+        </div>
+        <div region="south" style="height:10px;" border="false">
+
+        </div>
+    </div>
+</body>
+</html>
