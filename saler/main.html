@@ -47,7 +47,7 @@
         }
     </style>
 </head>
-<body class="easyui-layout" fit="true">
+<body class="easyui-layout" fit="true" >
 <!-- 网站首部 -->
 <div region="north" class="header" border="false">
     <span style="display:inline-block;float:left;width:120px;">
@@ -109,12 +109,12 @@
                     'text':'会员注册统计',
                     'iconCls':'icon-cart',
                     'attributes':{
-                        'url':'../back_page/vip/registerList.html'
+                        'url':'../back_page/vip/list.html'
                     }
                 },
                 {
                     'id':202,
-                    'text':'消费结算',
+                    'text':'会员消费统计',
                      'iconCls':'icon-money',
                     'attributes':{
                         'url':'../back_page/vipPay/orderList.html'
@@ -193,8 +193,9 @@
 <!-- 主要内容 -->
 <div region="center"  border="false">
     <div class="easyui-tabs" fit="true" id="tt">
-        <div title="首页" data-options="iconCls:'icon-application_home'">
-
+        <div title="首页" data-options="iconCls:'icon-application_home'" >
+        	当前时间：<font color="#33FFFF"><span id="nowDateTimeSpan"></span></font> 
+			<span style="font-size:32px;font-weight:400;">欢迎来到冷饮批发管理系统1.0之家</span><br/>
         </div>
     </div>
 </div>
